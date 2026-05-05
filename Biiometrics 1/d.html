@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>THE VANGUARD • ECHOSECURE Biometrics</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; background-color: #f8fafc; }
+        .heading-font { font-family: 'Playfair Display', sans-serif; }
+        .member-card { transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
+        .member-card:hover { transform: translateY(-10px); }
+        .ciso-badge { background: linear-gradient(90deg, #0ea5e9, #2563eb); }
+    </style>
+</head>
+<body class="text-slate-800">
+
+    <!-- Header Navigation -->
+    <nav class="bg-slate-900 text-white py-6 px-10 border-b border-white/10 sticky top-0 z-50">
+        <div class="max-w-screen-2xl mx-auto flex justify-between items-center">
+            <div class="flex items-center gap-4">
+                <i class="fas fa-shield-halved text-sky-400 text-2xl"></i>
+                <h1 class="text-xl font-bold heading-font tracking-tight uppercase">ECHOSECURE <span class="text-sky-400">Personnel</span></h1>
+            </div>
+            <a href="A.html" class="text-xs font-black uppercase tracking-widest hover:text-sky-400 transition-colors">
+                <i class="fas fa-arrow-left mr-2"></i> Return to Command
+            </a>
+        </div>
+    </nav>
+
+    <!-- Page Header -->
+    <header class="bg-slate-900 text-white py-20 px-10">
+        <div class="max-w-screen-2xl mx-auto">
+            <span class="text-sky-400 text-xs font-black uppercase tracking-[0.3em]">Access Level: Classified</span>
+            <h2 class="text-5xl font-bold heading-font mt-4">The Vanguard of Voice</h2>
+            <p class="text-slate-400 mt-6 max-w-2xl text-lg">Detailed directory of active biometric engineers and security architects currently maintaining the ECHOSECURE ecosystem.</p>
+        </div>
+    </header>
+
+    <main class="max-w-screen-2xl mx-auto py-20 px-10">
+        <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-8">
+            
+            <!-- CISO PROFILE -->
+            <div class="member-card group bg-white rounded-[2.5rem] overflow-hidden border border-slate-200 shadow-xl shadow-slate-200/50">
+                <div class="aspect-[4/5] bg-slate-100 relative overflow-hidden">
+                    <img src="Victor.jpeg" alt="Ndumba Victor" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700">
+                    <div class="absolute top-4 left-4 ciso-badge text-white text-[10px] font-black px-4 py-2 rounded-full uppercase tracking-tighter">
+                        CISO • Root Access
+                    </div>
+                </div>
+                <div class="p-8">
+                    <p class="text-sky-600 text-[10px] font-black uppercase tracking-widest mb-1">ID: 001</p>
+                    <h3 class="text-xl font-black text-slate-900">Ndumba Victor</h3>
+                    <p class="text-slate-500 text-sm font-medium mt-2">Biometric Systems Engineer & Founder</p>
+                    <div class="mt-6 flex gap-3">
+                        <div class="w-8 h-8 rounded-lg bg-slate-100 flex items-center justify-center text-slate-400 hover:text-sky-500 transition-colors"><i class="fab fa-linkedin-in"></i></div>
+                        <div class="w-8 h-8 rounded-lg bg-slate-100 flex items-center justify-center text-slate-400 hover:text-sky-500 transition-colors"><i class="fas fa-envelope"></i></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TEAM MEMBER 1 -->
+            <div class="member-card bg-white rounded-[2.5rem] overflow-hidden border border-slate-200 hover:shadow-lg transition-all">
+                <div class="aspect-[4/5] bg-slate-50">
+                    <img src="Kabunda.jpeg" alt="Kabunda Katanga" class="w-full h-full object-cover">
+                </div>
+                <div class="p-8">
+                    <p class="text-slate-400 text-[10px] font-black uppercase tracking-widest mb-1">ID: 002</p>
+                    <h3 class="text-xl font-black text-slate-900">Kabunda Katanga</h3>
+                    <p class="text-slate-500 text-sm font-medium mt-2">DFIR Specialist</p>
+                </div>
+            </div>
+
+            <!-- TEAM MEMBER 2 -->
+            <div class="member-card bg-white rounded-[2.5rem] overflow-hidden border border-slate-200 hover:shadow-lg transition-all">
+                <div class="aspect-[4/5] bg-slate-50">
+                    <img src="Bleston.jpeg" alt="Bleston Kupapala" class="w-full h-full object-cover">
+                </div>
+                <div class="p-8">
+                    <p class="text-slate-400 text-[10px] font-black uppercase tracking-widest mb-1">ID: 003</p>
+                    <h3 class="text-xl font-black text-slate-900">Bleston Kupapala</h3>
+                    <p class="text-slate-500 text-sm font-medium mt-2">AI/ML Security Analyst</p>
+                </div>
+            </div>
+
+            <!-- TEAM MEMBER 3 -->
+            <div class="member-card bg-white rounded-[2.5rem] overflow-hidden border border-slate-200 hover:shadow-lg transition-all">
+                <div class="aspect-[4/5] bg-slate-50">
+                    <img src="Peter.jpeg" alt="Peter Zulu" class="w-full h-full object-cover">
+                </div>
+                <div class="p-8">
+                    <p class="text-slate-400 text-[10px] font-black uppercase tracking-widest mb-1">ID: 004</p>
+                    <h3 class="text-xl font-black text-slate-900">Peter Zulu</h3>
+                    <p class="text-slate-500 text-sm font-medium mt-2">IAM Engineer</p>
+                </div>
+            </div>
+              <!-- TEAM MEMBER 4 -->
+            <div class="member-card bg-white rounded-[2.5rem] overflow-hidden border border-slate-200 hover:shadow-lg transition-all">
+                <div class="aspect-[4/5] bg-slate-50">
+                    <img src="Alinani.jpeg" alt="Peter Zulu" class="w-full h-full object-cover">
+                </div>
+                <div class="p-8">
+                    <p class="text-slate-400 text-[10px] font-black uppercase tracking-widest mb-1">ID: 005</p>
+                    <h3 class="text-xl font-black text-slate-900">Alinani Jethro Simukwasa</h3>
+                    <p class="text-slate-500 text-sm font-medium mt-2">Liveness And Anti-Spoofing Specialist</p>
+                </div>
+            </div>
+             <!-- TEAM MEMBER 5 -->
+            <div class="member-card bg-white rounded-[2.5rem] overflow-hidden border border-slate-200 hover:shadow-lg transition-all">
+                <div class="aspect-[4/5] bg-slate-50">
+                    <img src="Deborah.jpeg" alt="Peter Zulu" class="w-full h-full object-cover">
+                </div>
+                <div class="p-8">
+                    <p class="text-slate-400 text-[10px] font-black uppercase tracking-widest mb-1">ID: 006</p>
+                    <h3 class="text-xl font-black text-slate-900">Deborah Kampamba</h3>
+                    <p class="text-slate-500 text-sm font-medium mt-2">Cryptographic Specialist</p>
+                </div>
+            </div>
+             <!-- TEAM MEMBER 6 -->
+            <div class="member-card bg-white rounded-[2.5rem] overflow-hidden border border-slate-200 hover:shadow-lg transition-all">
+                <div class="aspect-[4/5] bg-slate-50">
+                    <img src="Mapalo.jpeg" alt="Peter Zulu" class="w-full h-full object-cover">
+                </div>
+                <div class="p-8">
+                    <p class="text-slate-400 text-[10px] font-black uppercase tracking-widest mb-1">ID: 007</p>
+                    <h3 class="text-xl font-black text-slate-900">Mumba Mapalo</h3>
+                    <p class="text-slate-500 text-sm font-medium mt-2">BDPC Officer</p>
+                </div>
+            </div>
+             <!-- TEAM MEMBER 7 -->
+            <div class="member-card bg-white rounded-[2.5rem] overflow-hidden border border-slate-200 hover:shadow-lg transition-all">
+                <div class="aspect-[4/5] bg-slate-50">
+                    <img src="Daniel.jpeg" alt="Peter Zulu" class="w-full h-full object-cover">
+                </div>
+                <div class="p-8">
+                    <p class="text-slate-400 text-[10px] font-black uppercase tracking-widest mb-1">ID: 008</p>
+                    <h3 class="text-xl font-black text-slate-900">Sweta Daniel</h3>
+                    <p class="text-slate-500 text-sm font-medium mt-2">Penetration Tester</p>
+                </div>
+            </div>
+             <!-- TEAM MEMBER 8 -->
+            <div class="member-card bg-white rounded-[2.5rem] overflow-hidden border border-slate-200 hover:shadow-lg transition-all">
+                <div class="aspect-[4/5] bg-slate-50">
+                    <img src="Kondwani.jpeg" alt="Peter Zulu" class="w-full h-full object-cover">
+                </div>
+                <div class="p-8">
+                    <p class="text-slate-400 text-[10px] font-black uppercase tracking-widest mb-1">ID: 009</p>
+                    <h3 class="text-xl font-black text-slate-900">Kondwani Mumba</h3>
+                    <p class="text-slate-500 text-sm font-medium mt-2">RTI Analyst</p>
+                </div>
+            </div>
+             <!-- TEAM MEMBER 9 -->
+            <div class="member-card bg-white rounded-[2.5rem] overflow-hidden border border-slate-200 hover:shadow-lg transition-all">
+                <div class="aspect-[4/5] bg-slate-50">
+                    <img src="Mwanza.jpeg" alt="Peter Zulu" class="w-full h-full object-cover">
+                </div>
+                <div class="p-8">
+                    <p class="text-slate-400 text-[10px] font-black uppercase tracking-widest mb-1">ID: 010</p>
+                    <h3 class="text-xl font-black text-slate-900">Kondwani Mwanza</h3>
+                    <p class="text-slate-500 text-sm font-medium mt-2">BS Architect</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="bg-white border-t py-12 px-10 text-center">
+        <p class="text-slate-400 text-[10px] font-black uppercase tracking-[0.4em]">© 2026 EchoSecure Intelligence • Personnel Directory</p>
+    </footer>
+
+</body>
+</html>

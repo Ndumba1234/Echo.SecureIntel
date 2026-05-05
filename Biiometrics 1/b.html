@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MEMBER ACCESS • ECHOSECURE</title>
+    <link href="A.html">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; background-color: #0f172a; }
+        .heading-font { font-family: 'Playfair Display', sans-serif; }
+        
+        /* Scanner Animation */
+        .scanner-line {
+            width: 100%; height: 2px; background: #0ea5e9;
+            position: absolute; top: 0; left: 0;
+            box-shadow: 0 0 15px #0ea5e9;
+            animation: scan 2s linear infinite;
+        }
+        @keyframes scan { 0% { top: 0% } 100% { top: 100% } }
+
+        .auth-card { background: rgba(30, 41, 59, 0.5); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.1); }
+        .pulse-red { animation: pulse-red 1.5s infinite; }
+        @keyframes pulse-red { 0% { box-shadow: 0 0 0 0px rgba(244, 63, 94, 0.4); } 70% { box-shadow: 0 0 0 15px rgba(244, 63, 94, 0); } 100% { box-shadow: 0 0 0 0px rgba(244, 63, 94, 0); } }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col items-center justify-center p-6 text-white">
+
+    <div class="max-w-md w-full">
+        <!-- Logo Branding -->
+        <div class="flex flex-col items-center mb-10">
+            <div class="w-16 h-16 bg-slate-900 rounded-2xl border border-sky-500/30 flex items-center justify-center mb-4 shadow-2xl">
+                <i class="fas fa-fingerprint text-sky-500 text-3xl"></i>
+            </div>
+            <h1 class="text-3xl font-bold heading-font tracking-tight">ECHOSECURE</h1>
+            <p class="text-[10px] font-black text-sky-500 tracking-[0.3em] uppercase mt-2">Intelligence Defense Vault</p>
+        </div>
+
+        <div class="auth-card rounded-[2.5rem] p-10 shadow-2xl relative overflow-hidden">
+            
+            <!-- STAGE 1: CREDENTIALS -->
+            <div id="login-form">
+                <h2 class="text-xl font-bold mb-2">Member Portal</h2>
+                <p class="text-slate-400 text-xs mb-8">Enter authorized name and system password.</p>
+                
+                <div class="space-y-4">
+                    <div class="relative">
+                        <i class="fas fa-user absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 text-sm"></i>
+                        <input type="text" id="member-name" placeholder="Full Name" class="w-full bg-slate-800/50 border border-white/10 p-4 pl-12 rounded-xl outline-none focus:border-sky-500 transition-all font-medium text-sm">
+                    </div>
+                    <div class="relative">
+                        <i class="fas fa-lock absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 text-sm"></i>
+                        <input type="password" id="member-pass" placeholder="Default Password " class="w-full bg-slate-800/50 border border-white/10 p-4 pl-12 rounded-xl outline-none focus:border-sky-500 transition-all font-medium text-sm">
+                    </div>
+                    <button onclick="startBiometrics()" class="w-full bg-sky-600 hover:bg-sky-500 text-white py-4 rounded-xl font-bold transition-all mt-4 shadow-lg shadow-sky-500/20">
+                        NEXT: VOICE AUTH
+                    </button>
+                </div>
+            </div>
+
+            <!-- STAGE 2: AUDIO VERIFICATION -->
+            <div id="biometric-stage" class="hidden text-center py-4">
+                <div class="mb-8 relative w-32 h-32 mx-auto rounded-full bg-slate-800 flex items-center justify-center border border-white/10 overflow-hidden">
+                    <div id="scanner" class="scanner-line hidden"></div>
+                    <i id="mic-icon" class="fas fa-microphone text-3xl text-sky-500"></i>
+                </div>
+                
+                <h2 class="text-xl font-bold mb-2">Vocal Challenge</h2>
+                <p class="text-slate-400 text-xs mb-8">Tap to record. Say: <br> <span class="text-sky-400 font-bold italic">"Authorize my biometric signature."</span></p>
+
+                <button id="record-btn" onclick="toggleRecording()" class="w-full border border-sky-500 text-sky-500 py-4 rounded-xl font-bold hover:bg-sky-500/10 transition-all">
+                    START CAPTURE
+                </button>
+            </div>
+
+            <!-- STAGE 3: WELCOME MESSAGE -->
+            <div id="welcome-stage" class="hidden text-center py-10">
+                <div class="w-20 h-20 bg-emerald-500 rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg shadow-emerald-500/40">
+                    <i class="fas fa-check text-2xl"></i>
+                </div>
+                <h2 class="text-3xl font-black heading-font">Welcome back,</h2>
+                <p id="welcome-name" class="text-2xl text-sky-400 font-bold mt-2"></p>
+                <p class="text-slate-400 text-sm mt-6">Neural match: 99.8% confirmed.<br>Terminal is now open.</p>
+                
+                <a href="d.html" class="inline-block mt-10 text-xs font-black uppercase tracking-widest text-slate-500 hover:text-white border-b border-slate-500 pb-1 transition-all">
+                    Access System Dashboard
+                </a>
+            </div>
+
+        </div>
+
+        <p class="text-center text-slate-600 text-[10px] mt-8 uppercase tracking-[0.4em]">© 2026 EchoSecure • Secure Personnel Access</p>
+    </div>
+
+    <script>
+        let isRecording = false;
+        let mediaRecorder;
+
+        function startBiometrics() {
+            const name = document.getElementById('member-name').value;
+            const pass = document.getElementById('member-pass').value;
+
+            if(!name || pass !== '1234') {
+                alert("Invalid Credentials. Default password is '1234'.");
+                return;
+            }
+
+            document.getElementById('login-form').classList.add('hidden');
+            document.getElementById('biometric-stage').classList.remove('hidden');
+            document.getElementById('welcome-name').innerText = name + "!";
+        }
+
+        async function toggleRecording() {
+            const btn = document.getElementById('record-btn');
+            const scanner = document.getElementById('scanner');
+            const icon = document.getElementById('mic-icon');
+
+            if (!isRecording) {
+                // Start Recording (Simulated)
+                isRecording = true;
+                btn.innerText = "TAP TO STOP";
+                btn.classList.add('bg-rose-500', 'text-white', 'border-rose-500', 'pulse-red');
+                scanner.classList.remove('hidden');
+                icon.classList.replace('text-sky-500', 'text-white');
+            } else {
+                // Stop and Verify
+                btn.innerText = "VERIFYING...";
+                btn.classList.remove('pulse-red');
+                btn.disabled = true;
+
+                // Artificial delay to simulate "Matching"
+                setTimeout(() => {
+                    document.getElementById('biometric-stage').classList.add('hidden');
+                    document.getElementById('welcome-stage').classList.remove('hidden');
+                }, 2000);
+            }
+        }
+    </script>
+</body>
+</html>

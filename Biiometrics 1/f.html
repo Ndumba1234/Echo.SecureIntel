@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>COMMAND CENTER • ECHOSECURE ADMIN</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;900&family=Playfair+Display:wght@600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; background-color: #f8fafc; }
+        .heading-font { font-family: 'Playfair Display', sans-serif; }
+        .status-pill { font-size: 10px; font-weight: 900; letter-spacing: 0.1em; padding: 4px 12px; border-radius: 99px; text-transform: uppercase; }
+        .status-pending { background: #fef9c3; color: #a16207; }
+        .status-approved { background: #dcfce7; color: #166534; }
+        .status-denied { background: #fee2e2; color: #991b1b; }
+    </style>
+    <script>
+        // SECURITY GATE: Absolute first priority
+        if (sessionStorage.getItem('admin_authenticated') !== 'true') {
+            window.location.replace("A.html"); 
+        }
+    </script>
+</head>
+<body class="text-slate-900">
+
+    <!-- Global Nav -->
+    <nav class="bg-slate-950 text-white p-6 border-b border-sky-500/20 sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto flex justify-between items-center">
+            <div class="flex items-center gap-3">
+                <i class="fas fa-user-shield text-sky-400"></i>
+                <h1 class="font-black uppercase tracking-widest text-xs">EchoSecure Vault Administration</h1>
+            </div>
+            <div class="flex items-center gap-6">
+                <a href="c.html" class="text-[10px] font-bold uppercase tracking-widest hover:text-sky-400">Recruitment Portal</a>
+                <button onclick="sessionStorage.clear(); window.location.href='A.html'" class="text-[10px] font-bold bg-rose-600 px-4 py-2 rounded-lg hover:bg-rose-500 transition-all">TERMINATE SESSION</button>
+            </div>
+        </div>
+    </nav>
+
+    <main class="max-w-7xl mx-auto py-12 px-6">
+        <header class="mb-12">
+            <span class="text-sky-600 text-xs font-black uppercase tracking-[0.3em]">CISO Level Access</span>
+            <h2 class="text-4xl font-bold heading-font mt-2 text-slate-900">Personnel Registry</h2>
+            <p class="text-slate-500 mt-2">Manage biometric identities and authorize terminal access levels.</p>
+        </header>
+
+        <!-- Dynamic Stats -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+            <div class="bg-white p-8 rounded-3xl border border-slate-200 shadow-sm">
+                <p class="text-slate-400 text-xs font-black uppercase mb-1">Total Vaulted</p>
+                <p id="stat-total" class="text-4xl font-bold text-slate-900">0</p>
+            </div>
+            <div class="bg-white p-8 rounded-3xl border border-slate-200 shadow-sm border-l-4 border-l-amber-400">
+                <p class="text-slate-400 text-xs font-black uppercase mb-1">Awaiting Review</p>
+                <p id="stat-pending" class="text-4xl font-bold text-amber-600">0</p>
+            </div>
+            <div class="bg-white p-8 rounded-3xl border border-slate-200 shadow-sm border-l-4 border-l-emerald-400">
+                <p class="text-slate-400 text-xs font-black uppercase mb-1">Approved Personnel</p>
+                <p id="stat-approved" class="text-4xl font-bold text-emerald-600">0</p>
+            </div>
+        </div>
+
+        <!-- Registry Table -->
+        <div class="bg-white rounded-[2rem] border border-slate-200 shadow-2xl overflow-hidden">
+            <table class="w-full text-left">
+                <thead>
+                    <tr class="bg-slate-50 border-b border-slate-200">
+                        <th class="px-8 py-5 text-[10px] font-black uppercase text-slate-400 tracking-widest">Agent Identity</th>
+                        <th class="px-8 py-5 text-[10px] font-black uppercase text-slate-400 tracking-widest">Biometric Hash</th>
+                        <th class="px-8 py-5 text-[10px] font-black uppercase text-slate-400 tracking-widest">Status</th>
+                        <th class="px-8 py-5 text-[10px] font-black uppercase text-slate-400 tracking-widest text-right">Command Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="registry-body">
+                    <!-- JS Injection -->
+                </tbody>
+            </table>
+            <div id="no-data" class="hidden p-24 text-center">
+                <i class="fas fa-folder-open text-5xl text-slate-200 mb-4"></i>
+                <p class="text-slate-400 font-medium">Vault terminal is currently empty.</p>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        function loadRegistry() {
+            const registry = JSON.parse(localStorage.getItem('echo_registry')) || [];
+            const tbody = document.getElementById('registry-body');
+            const noData = document.getElementById('no-data');
+            
+            // Update Stats Display
+            document.getElementById('stat-total').innerText = registry.length;
+            document.getElementById('stat-pending').innerText = registry.filter(a => !a.status || a.status === 'pending').length;
+            document.getElementById('stat-approved').innerText = registry.filter(a => a.status === 'approved').length;
+
+            if (registry.length === 0) {
+                tbody.innerHTML = '';
+                noData.classList.remove('hidden');
+                return;
+            }
+
+            noData.classList.add('hidden');
+            tbody.innerHTML = registry.map((user, index) => `
+                <tr class="border-b border-slate-100 hover:bg-sky-50/50 transition-all">
+                    <td class="px-8 py-6">
+                        <div class="flex flex-col">
+                            <span class="font-bold text-slate-900 text-lg">${user.name}</span>
+                            <span class="text-[10px] font-mono text-slate-400 uppercase">Credential: ${user.password}</span>
+                        </div>
+                    </td>
+                    <td class="px-8 py-6">
+                        <code class="text-xs bg-slate-100 px-3 py-1 rounded-full text-sky-600 border border-sky-100 font-mono">
+                            ${user.biometricHash || 'HASH-MISSING'}
+                        </code>
+                    </td>
+                    <td class="px-8 py-6">
+                        <span class="status-pill status-${user.status || 'pending'}">
+                            ${user.status || 'pending'}
+                        </span>
+                    </td>
+                    <td class="px-8 py-6">
+                        <div class="flex justify-end gap-3">
+                            <button onclick="updateStatus(${index}, 'approved')" class="w-9 h-9 rounded-xl bg-emerald-50 text-emerald-600 hover:bg-emerald-500 hover:text-white transition-all flex items-center justify-center shadow-sm" title="Approve">
+                                <i class="fas fa-check"></i>
+                            </button>
+                            <button onclick="updateStatus(${index}, 'denied')" class="w-9 h-9 rounded-xl bg-rose-50 text-rose-600 hover:bg-rose-500 hover:text-white transition-all flex items-center justify-center shadow-sm" title="Deny">
+                                <i class="fas fa-times"></i>
+                            </button>
+                            <button onclick="purgeEntry(${index})" class="w-9 h-9 rounded-xl bg-slate-100 text-slate-400 hover:bg-slate-900 hover:text-white transition-all flex items-center justify-center shadow-sm" title="Purge Data">
+                                <i class="fas fa-trash-alt"></i>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        function updateStatus(index, newStatus) {
+            let registry = JSON.parse(localStorage.getItem('echo_registry'));
+            registry[index].status = newStatus;
+            localStorage.setItem('echo_registry', JSON.stringify(registry));
+            loadRegistry();
+        }
+
+        function purgeEntry(index) {
+            if(confirm("PERMANENT ACTION: Purge this identity from the secure vault?")) {
+                let registry = JSON.parse(localStorage.getItem('echo_registry'));
+                registry.splice(index, 1);
+                localStorage.setItem('echo_registry', JSON.stringify(registry));
+                loadRegistry();
+            }
+        }
+
+        // Initialize
+        window.onload = loadRegistry;
+    </script>
+</body>
+</html>

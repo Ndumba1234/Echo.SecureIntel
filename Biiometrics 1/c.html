@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ENROLLMENT • ECHOSECURE Biometrics</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; background-color: #0f172a; color: #f8fafc; }
+        .heading-font { font-family: 'Playfair Display', sans-serif; }
+        .step-node.active { background: #0ea5e9; box-shadow: 0 0 20px #0ea5e9; }
+        
+        .rec-active { animation: pulse-red 1.5s infinite; background: #ef4444 !important; border-color: #ef4444 !important; }
+        @keyframes pulse-red { 
+            0% { box-shadow: 0 0 0 0px rgba(239, 68, 68, 0.4); }
+            70% { box-shadow: 0 0 0 20px rgba(239, 68, 68, 0); }
+            100% { box-shadow: 0 0 0 0px rgba(239, 68, 68, 0); }
+        }
+        .wave-bar { transition: height 0.2s ease; }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col">
+
+    <nav class="p-8 flex justify-between items-center max-w-screen-2xl mx-auto w-full">
+        <div class="flex items-center gap-3">
+            <div class="w-8 h-8 bg-sky-500 rounded flex items-center justify-center">
+                <i class="fas fa-fingerprint text-white text-sm"></i>
+            </div>
+            <h1 class="font-bold heading-font tracking-widest">ECHOSECURE</h1>
+        </div>
+        <a href="A.html" class="text-xs font-bold text-slate-400 hover:text-white transition-all uppercase tracking-widest">
+            <i class="fas fa-times mr-2"></i> Cancel
+        </a>
+    </nav>
+
+    <main class="flex-1 flex items-center justify-center p-6">
+        <div class="max-w-4xl w-full grid lg:grid-cols-5 gap-0 rounded-[3rem] overflow-hidden shadow-2xl border border-white/5">
+            
+            <div class="lg:col-span-2 bg-slate-900 p-12 flex flex-col justify-between">
+                <div>
+                    <span class="text-sky-500 text-[10px] font-black uppercase tracking-widest">Enrollment Module</span>
+                    <h2 class="text-4xl font-bold heading-font mt-4">Security <br>Onboarding</h2>
+                    <p class="text-slate-400 mt-6 text-sm leading-relaxed">Initialize your vocal signature. This audio will be converted into a non-reversible cryptographic hash.</p>
+                </div>
+
+                <div class="space-y-8 mt-12">
+                    <div class="flex items-center gap-4">
+                        <div id="step1-node" class="step-node active w-3 h-3 rounded-full transition-all"></div>
+                        <span class="text-xs font-bold uppercase tracking-widest">Identity Info</span>
+                    </div>
+                    <div class="flex items-center gap-4">
+                        <div id="step2-node" class="step-node w-3 h-3 rounded-full bg-slate-700 transition-all"></div>
+                        <span class="text-xs font-bold uppercase tracking-widest text-slate-500">Biometric Capture</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="lg:col-span-3 bg-white p-12 md:p-16 text-slate-900">
+                
+                <!-- STAGE 1: FORM -->
+                <div id="form-section">
+                    <h3 class="text-2xl font-black mb-8 text-slate-900">Professional Profile</h3>
+                    <div class="space-y-6">
+                        <div>
+                            <label class="text-[10px] font-black uppercase text-slate-400 tracking-widest ml-1">Enter Username</label>
+                            <input type="text" id="apply-name" placeholder="Agent Name" class="w-full border-b-2 border-slate-100 p-3 outline-none focus:border-sky-500 transition-all font-medium text-slate-900">
+                        </div>
+                        <div>
+                            <label class="text-[10px] font-black uppercase text-slate-400 tracking-widest ml-1">Password</label>
+                            <input type="password" id="apply-pass" value="1234" class="w-full border-b-2 border-slate-100 p-3 outline-none focus:border-sky-500 transition-all font-medium text-slate-900">
+                            <p class="text-[9px] text-slate-400 mt-1 italic">Default system password: 1234</p>
+                        </div>
+                        <button onclick="goToVoice()" class="w-full bg-slate-900 text-white py-5 rounded-2xl font-black mt-8 hover:bg-sky-600 transition-all">
+                            INITIALIZE BIOMETRICS
+                        </button>
+                    </div>
+                </div>
+
+                <!-- STAGE 2: RECORDING -->
+                <div id="voice-section" class="hidden text-center">
+                    <h3 class="text-2xl font-black mb-2 text-slate-900">Voice Print Acquisition</h3>
+                    <p class="text-slate-500 text-sm mb-10">Tap the icon to start. Say: <br> <span class="text-sky-600 italic font-bold">"Identity verified, grant secure terminal access."</span></p>
+                    
+                    <div class="relative w-48 h-48 mx-auto mb-8">
+                        <button id="rec-btn" onclick="handleToggleRecording()" class="w-full h-full rounded-full border-8 border-slate-100 flex items-center justify-center transition-all bg-slate-50 cursor-pointer hover:border-sky-100">
+                            <i id="mic-icon" class="fas fa-microphone text-4xl text-slate-300"></i>
+                            <div id="wave-container" class="hidden flex items-end justify-center gap-1 h-12">
+                                <div class="wave-bar w-1 bg-sky-500 h-4 animate-bounce"></div>
+                                <div class="wave-bar w-1 bg-sky-500 h-10 animate-bounce" style="animation-delay:0.1s"></div>
+                                <div class="wave-bar w-1 bg-sky-500 h-6 animate-bounce" style="animation-delay:0.2s"></div>
+                            </div>
+                        </button>
+                    </div>
+
+                    <p id="rec-status" class="text-xs font-black uppercase tracking-[0.2em] text-slate-400 mb-8">Ready for Signal</p>
+
+                    <button id="submit-application" onclick="finalizeSubmission()" class="hidden w-full bg-sky-600 text-white py-5 rounded-2xl font-black hover:bg-sky-500 transition-all shadow-xl shadow-sky-500/20">
+                        SUBMIT TO VAULT
+                    </button>
+                </div>
+
+                <!-- STAGE 3: SUCCESS -->
+                <div id="success-section" class="hidden text-center py-10">
+                    <div class="w-20 h-20 bg-emerald-500 text-white rounded-full flex items-center justify-center text-3xl mx-auto mb-6 shadow-lg shadow-emerald-500/30">
+                        <i class="fas fa-check"></i>
+                    </div>
+                    <h3 class="text-3xl font-black text-slate-900">Account Active</h3>
+                    <p class="text-slate-500 mt-4">Biometric enrollment confirmed for <span id="display-name" class="font-bold text-slate-900 uppercase"></span>.</p>
+                    
+                    <div class="flex flex-col gap-6 mt-10 items-center">
+                        <a href="A.html" class="bg-slate-900 text-white px-8 py-4 rounded-xl font-bold uppercase text-xs tracking-widest hover:bg-slate-800 transition-all">Return to Terminal</a>
+                        <button onclick="requestAdminAccess()" class="text-slate-400 font-bold uppercase text-[10px] tracking-[0.2em] hover:text-sky-600 transition-colors">
+                            <i class="fas fa-lock mr-2"></i> Open Vault (Admin Only)
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </main>
+
+    <script>
+        let mediaRecorder;
+        let audioChunks = [];
+        let isRecording = false;
+
+        function goToVoice() {
+            const name = document.getElementById('apply-name').value;
+            if(!name) return alert("System requires a username for mapping.");
+            
+            document.getElementById('form-section').classList.add('hidden');
+            document.getElementById('voice-section').classList.remove('hidden');
+            document.getElementById('step2-node').classList.add('active');
+            document.getElementById('display-name').innerText = name;
+        }
+
+        async function handleToggleRecording() {
+            const btn = document.getElementById('rec-btn');
+            const icon = document.getElementById('mic-icon');
+            const status = document.getElementById('rec-status');
+            const wave = document.getElementById('wave-container');
+            const submit = document.getElementById('submit-application');
+
+            if (!isRecording) {
+                try {
+                    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                    mediaRecorder = new MediaRecorder(stream);
+                    audioChunks = [];
+                    mediaRecorder.ondataavailable = (e) => audioChunks.push(e.data);
+                    mediaRecorder.start();
+                    isRecording = true;
+                    btn.classList.add('rec-active');
+                    icon.classList.add('hidden');
+                    wave.classList.remove('hidden');
+                    status.innerText = "RECORDING... TAP TO STOP";
+                    status.classList.add('text-red-500');
+                } catch (err) {
+                    alert("Microphone access denied.");
+                }
+            } else {
+                mediaRecorder.stop();
+                isRecording = false;
+                btn.classList.remove('rec-active');
+                btn.classList.add('border-emerald-500', 'bg-emerald-50');
+                wave.classList.add('hidden');
+                icon.classList.remove('hidden', 'text-slate-300');
+                icon.classList.add('text-emerald-500', 'fa-check-double');
+                status.innerText = "SIGNAL CAPTURED";
+                status.classList.replace('text-red-500', 'text-emerald-500');
+                submit.classList.remove('hidden');
+                btn.onclick = null; 
+            }
+        }
+
+        function finalizeSubmission() {
+            const name = document.getElementById('apply-name').value;
+            const pass = document.getElementById('apply-pass').value;
+            
+            // Create the record
+            const newAgent = {
+                name: name,
+                password: pass,
+                biometricHash: "VOX-" + Math.random().toString(36).substring(2, 10).toUpperCase(),
+                status: 'pending'
+            };
+
+            // GET existing registry or start new
+            let registry = JSON.parse(localStorage.getItem('echo_registry')) || [];
+            
+            // SAVE to registry
+            registry.push(newAgent);
+            localStorage.setItem('echo_registry', JSON.stringify(registry));
+
+            // Show success UI
+            document.getElementById('voice-section').classList.add('hidden');
+            document.getElementById('success-section').classList.remove('hidden');
+        }
+
+        function requestAdminAccess() {
+            const MASTER_KEY = "2510076"; 
+            const accessGate = prompt("ECHOSECURE COMMAND OVERRIDE: Enter Admin Key");
+
+            if (accessGate === MASTER_KEY) {
+                sessionStorage.setItem('admin_authenticated', 'true');
+                window.location.href = "f.html"; 
+            } else {
+                alert("ACCESS DENIED: Unauthorized Identity.");
+            }
+        }
+    </script>
+</body>
+</html>

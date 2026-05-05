@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ENROLLMENT • ECHOSECURE Biometrics</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; background-color: #0f172a; color: #f8fafc; }
+        .heading-font { font-family: 'Playfair Display', sans-serif; }
+        .rec-active { animation: pulse-red 1.5s infinite; background: #ef4444 !important; border-color: #ef4444 !important; }
+        @keyframes pulse-red { 
+            0% { box-shadow: 0 0 0 0px rgba(239, 68, 68, 0.4); }
+            70% { box-shadow: 0 0 0 20px rgba(239, 68, 68, 0); }
+            100% { box-shadow: 0 0 0 0px rgba(239, 68, 68, 0); }
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col">
+
+    <nav class="p-8 flex justify-between items-center max-w-screen-2xl mx-auto w-full">
+        <div class="flex items-center gap-3">
+            <div class="w-8 h-8 bg-sky-500 rounded flex items-center justify-center">
+                <i class="fas fa-fingerprint text-white text-sm"></i>
+            </div>
+            <h1 class="font-bold heading-font tracking-widest">ECHOSECURE</h1>
+        </div>
+        <a href="c.html" class="text-xs font-bold text-slate-400 hover:text-white transition-all uppercase tracking-widest">
+            <i class="fas fa-times mr-2"></i> Cancel
+        </a>
+    </nav>
+
+    <main class="flex-1 flex items-center justify-center p-6">
+        <div class="max-w-4xl w-full grid lg:grid-cols-5 bg-white rounded-[3rem] overflow-hidden shadow-2xl border border-white/5">
+            
+            <!-- Left Info Panel -->
+            <div class="lg:col-span-2 bg-slate-900 p-12 text-white">
+                <span class="text-sky-500 text-[10px] font-black uppercase tracking-widest">Data Acquisition</span>
+                <h2 class="text-4xl font-bold heading-font mt-4">Registry <br>Storage</h2>
+                <p class="text-slate-400 mt-6 text-sm">All captured biometrics are locally encrypted and stored in the EchoSecure Member Registry.</p>
+            </div>
+
+            <!-- Right Interaction Panel -->
+            <div class="lg:col-span-3 p-12 text-slate-900">
+                
+                <!-- STEP 1: INPUT -->
+                <div id="form-section">
+                    <h3 class="text-2xl font-black mb-6">Identity Entry</h3>
+                    <div class="space-y-4">
+                        <input type="text" id="store-name" placeholder="Full Name" class="w-full bg-slate-100 p-4 rounded-xl outline-none focus:ring-2 ring-sky-500 font-bold">
+                        <input type="password" id="store-pass" value="1234" class="w-full bg-slate-100 p-4 rounded-xl outline-none focus:ring-2 ring-sky-500 font-bold">
+                        <button onclick="moveToVoice()" class="w-full bg-slate-900 text-white py-4 rounded-xl font-bold">NEXT: VOICE CAPTURE</button>
+                    </div>
+                </div>
+
+                <!-- STEP 2: VOICE -->
+                <div id="voice-section" class="hidden text-center">
+                    <h3 class="text-xl font-black mb-6">Biometric Capture</h3>
+                    <button id="rec-btn" onclick="toggleRecording()" class="w-32 h-32 rounded-full border-4 border-slate-100 bg-slate-50 flex items-center justify-center mx-auto mb-4 transition-all">
+                        <i id="mic-icon" class="fas fa-microphone text-3xl text-slate-300"></i>
+                    </button>
+                    <p id="rec-status" class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Tap to start</p>
+                    <button id="save-btn" onclick="saveData()" class="hidden w-full bg-emerald-600 text-white py-4 rounded-xl font-bold mt-8 shadow-lg">FINALIZE & STORE</button>
+                </div>
+
+                <!-- STEP 3: SUCCESS & DATA VIEW -->
+                <div id="success-section" class="hidden">
+                    <div class="text-center">
+                        <i class="fas fa-check-circle text-emerald-500 text-5xl mb-4"></i>
+                        <h3 class="text-2xl font-black">Data Secured</h3>
+                        <p class="text-slate-500 text-sm mb-8">Applicant details moved to vault.</p>
+                    </div>
+                    
+                    <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200">
+                        <p class="text-[10px] font-black uppercase text-slate-400 mb-2">Recently Registered:</p>
+                        <div id="data-list" class="text-xs font-mono space-y-1"></div>
+                    </div>
+                    <a href="A.html" class="block text-center mt-6 text-sky-600 font-bold text-xs uppercase tracking-widest">Back to Main</a>
+                </div>
+
+            </div>
+        </div>
+    </main>
+
+    <script>
+        let isRecording = false;
+
+        function moveToVoice() {
+            const name = document.getElementById('store-name').value;
+            if(!name) return alert("Identity Name Required.");
+            document.getElementById('form-section').classList.add('hidden');
+            document.getElementById('voice-section').classList.remove('hidden');
+        }
+
+        function toggleRecording() {
+            const btn = document.getElementById('rec-btn');
+            const icon = document.getElementById('mic-icon');
+            const status = document.getElementById('rec-status');
+            const saveBtn = document.getElementById('save-btn');
+
+            if(!isRecording) {
+                isRecording = true;
+                btn.classList.add('rec-active');
+                icon.classList.replace('text-slate-300', 'text-white');
+                status.innerText = "RECORDING... TAP TO STOP";
+            } else {
+                isRecording = false;
+                btn.classList.remove('rec-active');
+                btn.classList.add('bg-emerald-50', 'border-emerald-500');
+                icon.classList.replace('text-white', 'text-emerald-500');
+                icon.className = "fas fa-check text-3xl";
+                status.innerText = "BIOMETRIC CAPTURED";
+                saveBtn.classList.remove('hidden');
+            }
+        }
+
+        function saveData() {
+            const name = document.getElementById('store-name').value;
+            const pass = document.getElementById('store-pass').value;
+            
+            // Generate a fake hash for the voice signature
+            const voiceHash = "MFCC-" + Math.random().toString(36).substring(7).toUpperCase();
+
+            // Create applicant object
+            const applicant = {
+                id: Date.now(),
+                name: name,
+                password: pass,
+                biometricHash: voiceHash,
+                timestamp: new Date().toLocaleString()
+            };
+
+            // Get existing data from LocalStorage or start new array
+            let registry = JSON.parse(localStorage.getItem('echo_registry')) || [];
+            
+            // Add new applicant
+            registry.push(applicant);
+            
+            // Save back to LocalStorage
+            localStorage.setItem('echo_registry', JSON.stringify(registry));
+
+            // Show Success UI
+            document.getElementById('voice-section').classList.add('hidden');
+            document.getElementById('success-section').classList.remove('hidden');
+
+            // Display current list
+            const list = document.getElementById('data-list');
+            list.innerHTML = registry.map(a => `
+                <div class="border-b border-slate-200 pb-1">
+                    <span class="text-sky-600 font-bold">${a.name}</span> | Hash: ${a.biometricHash}
+                </div>
+            `).join('');
+        }
+    </script>
+</body>
+</html>
